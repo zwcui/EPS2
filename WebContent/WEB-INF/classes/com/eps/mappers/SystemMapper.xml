@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.SystemDAO">
+    <select id="getMaxNum" parameterType="String" resultType="java.lang.Integer" statementType="STATEMENT">
+        select count(*) from ${_parameter}
+    </select>
+    
+    <select id="getMaxNumFromTable" parameterType="String" resultType="com.eps.bean.TableMaxsn">
+    	select * from table_maxsn where tableName=#{tableName}
+    </select>
+    
+    <update id="updateMaxNumFromTable" parameterType="String">
+    	update table_maxsn set maxserialno=#{maxSerialNo},currentdate=#{currentDate},totalcount=#{totalCount} where tableName=#{tableName}
+    </update>
+    
+    <insert id="insertMaxNum" parameterType="String">
+    	insert into table_maxsn(tablename,maxserialno,currentdate,totalcount) values (#{tableName},#{maxSerialNo},#{currentDate},#{totalCount})
+    </insert>
+    
+</mapper>

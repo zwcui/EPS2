@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.ProductDAO">
+    <select id="queryAllProduct" parameterType="String" resultType="com.eps.bean.Product">
+    	select * from product_library where isinuse='1' order by productid
+    </select>
+    
+    <select id="queryProductNotLocked" parameterType="String" resultType="com.eps.bean.Product">
+    	select * from product_library where isinuse='1' and islocked in ('0') order by productid
+    </select>
+    
+    <select id="queryProductByID" parameterType="String" resultType="com.eps.bean.Product">
+    	select * from product_library where isinuse='1' and productID=#{productID,jdbcType=VARCHAR}
+    </select>
+    
+    <insert id="insertProduct" parameterType="String" >
+        insert into product_library(serialno,productid,productname,isinuse,islocked,inputuserid,inputorgid,inputtime) values (#{serialNo},#{productID},#{productName},#{isInUse},#{isLocked},#{inputUserID},#{inputOrgID},#{inputTime})
+    </insert>
+    
+    <update id="updateProduct" parameterType="String">
+    	update product_library set productid=#{productID,jdbcType=VARCHAR}, productname=#{productName,jdbcType=VARCHAR}, isinuse=#{isInUse,jdbcType=VARCHAR}, islocked=#{isLocked,jdbcType=VARCHAR}, inputuserid=#{inputUserID,jdbcType=VARCHAR}, inputorgid=#{inputOrgID,jdbcType=VARCHAR}, inputtime=#{inputTime,jdbcType=VARCHAR} where serialno=#{serialNo}
+    </update>
+</mapper>

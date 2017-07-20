@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Documents>
+	<Document type="xls" templateno="xls_01">
+		<Property name="path" value="E:/doc/WorkTemplate01.xlsx"/>
+<!-- 		<Property name="path" value="/data/wwwroot/default/EPS2/WorkTemplate01.xlsx"/> -->
+		<Property name="startline" value="14"/>
+		<Property name="infocol" value="1@productID|2@productType|3@latusRectum|4@num|5@price|6@businessSum|7@material|8@standard"/>
+	</Document>
+</Documents>

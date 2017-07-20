@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.FlowDAO">
+    <insert id="createFlowInstance" parameterType="com.eps.bean.FlowInstance">
+        insert into flow_instance(serialno,flowno,flowstatus,createtime) values (#{serialNo},#{flowNo},#{flowStatus},#{createTime})
+    </insert>
+    
+    <insert id="createFlowTask" parameterType="com.eps.bean.FlowTask">
+    	insert into flow_task (taskserialno,flowserialno,userid,orgid,taskstate,createtime,phaseno) values (#{taskSerialNo},#{flowSerialNo},#{userID},#{orgID},#{taskState},#{createTime},#{phaseNo})
+    </insert>
+    
+    <insert id="createFlowObject" parameterType="com.eps.bean.FlowObject">
+    	insert into flow_object (serialno,flowserialno,objecttype,objectno) values (#{serialNo},#{flowSerialNo},#{objectType},#{objectNo})
+    </insert>
+    
+    <insert id="createFlowRelative" parameterType="com.eps.bean.FlowRelative">
+    	insert into flow_relative (serialno,flowserialno,taskserialno,nexttaskserialno) values (#{serialNo},#{flowSerialNo},#{taskSerialNo},#{nextTaskSerialNo})
+    </insert>
+    
+    <select id="queryFlowModelByFlowNo" parameterType="String" resultType="com.eps.bean.FlowModel" >
+    	select * from flow_model where flowno=#{flowNo} order by sortno
+    </select>
+    
+    <select id="queryCurrentFlowTask" parameterType="String" resultType="com.eps.bean.FlowTask" >
+    	select * from flow_task where taskserialno=#{taskSerialNo} and taskState='1'
+    </select>
+    
+    <select id="queryCurrentFlowTask2" parameterType="String" resultType="com.eps.bean.FlowTask" >
+    	select * from flow_task where taskserialno=#{taskSerialNo}
+    </select>
+    
+    <select id="queryFlowTaskByFlowSerialNo" parameterType="String" resultType="com.eps.bean.FlowTask" >
+    	select * from flow_task where flowserialno=#{flowSerialNo} order by taskserialno
+    </select>
+    
+    <select id="queryCurrentFlowInstance" parameterType="String" resultType="com.eps.bean.FlowInstance" >
+    	select * from flow_instance where serialno=#{flowSerialNo}
+    </select>
+    
+    <select id="queryCurrentFlowObject" parameterType="String" resultType="com.eps.bean.FlowObject" >
+    	select * from flow_object where flowserialno=#{flowSerialNo}
+    </select>
+    
+    <update id="updateFlowTask" parameterType="String">
+    	update flow_task set taskstate=#{taskState,jdbcType=VARCHAR},endtime=#{endTime,jdbcType=VARCHAR},phaseAction=#{phaseAction,jdbcType=VARCHAR},phaseOpinion=#{phaseOpinion,jdbcType=VARCHAR},updateTime=#{updateTime,jdbcType=VARCHAR}  where taskserialno=#{taskSerialNo}
+    </update>
+    
+    <update id="updateFlowInstance" parameterType="String">
+    	update flow_instance set flowstatus=#{flowStatus,jdbcType=VARCHAR},endtime=#{endTime,jdbcType=VARCHAR} where serialno=#{serialNo}
+    </update>
+    
+    <select id="queryFlowModelByFlowNoAndPhaseNo" parameterType="String" resultType="com.eps.bean.FlowModel" >
+    	select * from flow_model where flowno=#{flowNo} and phaseno=#{phaseNo}
+    </select>
+    
+    <select id="queryFlowCatalog" parameterType="String" resultType="com.eps.bean.FlowCatalog" >
+    	select * from flow_catalog where flowno=#{flowNo}
+    </select>
+    
+    <select id="queryAllFlowNo" parameterType="String" resultType="com.eps.bean.FlowCatalog" >
+    	select * from flow_catalog where status='1' order by serialno
+    </select>
+    
+    <select id="queryFlowOpinionForExport" parameterType="String" resultType="com.eps.bean.FlowTask" >
+    	select * from flow_task where flowserialno in (select flowserialno from flow_object where objectno=#{serialNo} and objecttype='BUSINESS_ORDER') and phaseNo=#{phaseNo} order by taskserialno desc
+    </select>
+</mapper>

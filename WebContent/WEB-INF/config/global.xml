@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalConfigs>
+	<APP_HOME>E://Workspace/EntProductingSystem2</APP_HOME>
+	<UploadFilePath>E://tmp/file/</UploadFilePath>
+	<ExportFilePath>E://tmp/file/export/</ExportFilePath>
+	
+<!-- 	<APP_HOME>/data/wwwroot/default/EPS</APP_HOME> -->
+<!-- 	<UploadFilePath>/root/app/web/EPS2/UploadFile/</UploadFilePath> -->
+<!-- 	<ExportFilePath>/root/app/web/EPS2/ExportFile/</ExportFilePath> -->
+	
+</GlobalConfigs>

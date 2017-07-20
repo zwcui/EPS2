@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.OrderDAO">
+    <insert id="insertBusinessOrder" parameterType="String" >
+        insert into business_order(serialno,businesstype,ordertype,flowno,count,state,inputuserid,inputorgid,inputtime,operateuserid,operateorgid,updatetime,orderdate,shouldfinishdate,advisefinishdate,customername,customeraddr,customerphone,remark,orderno,productid) values (#{serialNo},#{businessType},#{orderType},#{flowNo},#{count},#{state},#{inputUserID},#{inputOrgID},#{inputTime},#{operateUserID},#{operateOrgID},#{updateTime},#{orderDate},#{shouldFinishDate},#{adviseFinishDate},#{customerName},#{customerAddr},#{customerPhone},#{remark},#{orderNo},#{productID})
+    </insert>
+    
+    <insert id="insertBusinessOrderInfo" parameterType="String">
+        insert into business_orderinfo (serialno,orderserialno,standard,num,price,businesssum,productid,producttype,latusrectum,material,casting_S_DATE,casting_A_DATE,casting_REMARK,metalWorking_S_DATE,metalWorking_A_DATE,metalWorking_REMARK,assembling_S_DATE,assembling_A_DATE,assembling_REMARK,painting_S_DATE,painting_A_DATE,painting_REMARK,instrument_S_DATE,instrument_A_DATE,instrument_REMARK) values (#{serialNo},#{orderSerialNo},#{standard},#{num},#{price},#{businessSum},#{productID},#{productType},#{latusRectum},#{material},#{casting_S_DATE,jdbcType=VARCHAR},#{casting_A_DATE,jdbcType=VARCHAR},#{casting_REMARK,jdbcType=VARCHAR},#{metalWorking_S_DATE,jdbcType=VARCHAR},#{metalWorking_A_DATE,jdbcType=VARCHAR},#{metalWorking_REMARK,jdbcType=VARCHAR},#{assembling_S_DATE,jdbcType=VARCHAR},#{assembling_A_DATE,jdbcType=VARCHAR},#{assembling_REMARK,jdbcType=VARCHAR},#{painting_S_DATE,jdbcType=VARCHAR},#{painting_A_DATE,jdbcType=VARCHAR},#{painting_REMARK,jdbcType=VARCHAR},#{instrument_S_DATE,jdbcType=VARCHAR},#{instrument_A_DATE,jdbcType=VARCHAR},#{instrument_REMARK,jdbcType=VARCHAR}) 
+    </insert>
+    
+    <select id="queryBusinessOrderBySerialNo" parameterType="String" resultType="com.eps.bean.Order">
+    	select * from business_order where serialno=#{serialNo,jdbcType=VARCHAR} and exists(select 1 from product_library pl where business_order.productid=pl.productid and pl.islocked &lt;&gt; '1')
+    </select>
+    
+    <select id="queryBusinessOrderInfoBySerialNo" parameterType="String" resultType="com.eps.bean.OrderInfo">
+    	select * from business_orderinfo where serialno=#{serialNo,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="queryBusinessOrderInfoByOrderSerialNo" parameterType="String" resultType="com.eps.bean.OrderInfo">
+		select * from business_orderinfo where orderserialno=#{orderSerialNo,jdbcType=VARCHAR} order by serialno
+    </select>
+    
+    <select id="queryBusinessOrderByState" parameterType="String" resultType="com.eps.bean.Order">
+    	select * from business_order where state=#{state,jdbcType=VARCHAR} and exists(select 1 from product_library pl where business_order.productid=pl.productid and pl.islocked &lt;&gt; '1') order by inputtime desc
+    </select>
+    
+    <select id="queryBusinessOrderByProductID" parameterType="String" resultType="com.eps.bean.Order">
+    	select * from business_order where productid=#{productID,jdbcType=VARCHAR} and exists(select 1 from product_library pl where business_order.productid=pl.productid and pl.islocked &lt;&gt; '1') order by inputtime desc
+    </select>
+    
+    <select id="queryBusinessOrderByStateAndUserID" parameterType="String" resultType="com.eps.bean.Order">
+    	select * from business_order where state=#{state,jdbcType=VARCHAR} and inputuserid=#{inputUserID,jdbcType=VARCHAR} and not exists(select 1 from flow_object fo where fo.objectno=business_order.serialno and fo.objecttype='business_order') and exists(select 1 from product_library pl where business_order.productid=pl.productid and pl.islocked &lt;&gt; '1') order by inputtime desc
+    </select>
+    
+    <select id="queryBusinessOrderByCondition" parameterType="String" resultType="com.eps.bean.Order">
+    	select * from business_order where serialno like #{serialNo,jdbcType=VARCHAR} and businessType like #{businessType,jdbcType=VARCHAR} and orderType like #{orderType,jdbcType=VARCHAR} and flowNo like #{flowNo,jdbcType=VARCHAR} and count like #{count,jdbcType=VARCHAR} and state like #{state,jdbcType=VARCHAR} and inputuserid like #{inputUserID,jdbcType=VARCHAR} and inputOrgID like #{inputOrgID,jdbcType=VARCHAR} and inputTime like #{inputTime,jdbcType=VARCHAR} and exists(select 1 from product_library pl where business_order.productid=pl.productid and pl.islocked &lt;&gt; '1')
+    </select>
+    
+    <select id="queryBusinessOrderAndTaskByTask" parameterType="String" resultType="com.eps.bean.Order">
+    	SELECT bo.*,ft.taskserialno,ft.flowserialno FROM business_order bo ,flow_object fo , flow_task ft where fo.objectno=bo.serialno and ft.flowserialno=fo.flowserialno and ft.userid=#{userID,jdbcType=VARCHAR} and ft.orgid=#{orgID,jdbcType=VARCHAR} and ft.taskstate=#{taskState,jdbcType=VARCHAR} and exists(select 1 from product_library pl where bo.productid=pl.productid and pl.islocked &lt;&gt; '1') order by bo.inputtime desc
+    </select>
+    
+    <update id="updateBusinessOrder" parameterType="String">
+    	update business_order set businesstype=#{businessType,jdbcType=VARCHAR}, ordertype=#{orderType,jdbcType=VARCHAR}, flowno=#{flowNo,jdbcType=VARCHAR}, count=#{count,jdbcType=VARCHAR}, state=#{state,jdbcType=VARCHAR}, operateuserid=#{operateUserID,jdbcType=VARCHAR}, operateorgid=#{operateOrgID,jdbcType=VARCHAR}, updatetime=#{updateTime,jdbcType=VARCHAR}, orderDate=#{orderDate,jdbcType=VARCHAR},shouldFinishDate=#{shouldFinishDate,jdbcType=VARCHAR}, adviseFinishDate=#{adviseFinishDate,jdbcType=VARCHAR},customerName=#{customerName,jdbcType=VARCHAR},customerAddr=#{customerAddr,jdbcType=VARCHAR},customerPhone=#{customerPhone,jdbcType=VARCHAR}, remark=#{remark,jdbcType=VARCHAR}, orderno=#{orderNo,jdbcType=VARCHAR}, productID=#{productID,jdbcType=VARCHAR}, orderBackRemark=#{orderBackRemark,jdbcType=VARCHAR}, orderRecord=#{orderRecord,jdbcType=VARCHAR}, skipCasting=#{skipCasting,jdbcType=VARCHAR}, skipMetalWorking=#{skipMetalWorking,jdbcType=VARCHAR}, skipAssembly=#{skipAssembly,jdbcType=VARCHAR}, skipPainting=#{skipPainting,jdbcType=VARCHAR}, skipInstrument=#{skipInstrument,jdbcType=VARCHAR} where serialno=#{serialNo}
+    </update>
+    
+    <update id="updateBusinessOrderInfoBySerialNo" parameterType="String">
+    	update business_orderinfo set standard=#{standard,jdbcType=VARCHAR}, num=#{num,jdbcType=VARCHAR}, price=#{price,jdbcType=VARCHAR}, businesssum=#{businessSum,jdbcType=VARCHAR}, productID=#{productID,jdbcType=VARCHAR}, productType=#{productType,jdbcType=VARCHAR}, latusRectum=#{latusRectum,jdbcType=VARCHAR}, material=#{material,jdbcType=VARCHAR},casting_S_DATE=#{casting_S_DATE,jdbcType=VARCHAR},casting_A_DATE=#{casting_A_DATE,jdbcType=VARCHAR},casting_REMARK=#{casting_REMARK,jdbcType=VARCHAR},metalWorking_S_DATE=#{metalWorking_S_DATE,jdbcType=VARCHAR},metalWorking_A_DATE=#{metalWorking_A_DATE,jdbcType=VARCHAR},metalWorking_REMARK=#{metalWorking_REMARK,jdbcType=VARCHAR},assembling_S_DATE=#{assembling_S_DATE,jdbcType=VARCHAR},assembling_A_DATE=#{assembling_A_DATE,jdbcType=VARCHAR},assembling_REMARK=#{assembling_REMARK,jdbcType=VARCHAR},painting_S_DATE=#{painting_S_DATE,jdbcType=VARCHAR},painting_A_DATE=#{painting_A_DATE,jdbcType=VARCHAR},painting_REMARK=#{painting_REMARK,jdbcType=VARCHAR},instrument_S_DATE=#{instrument_S_DATE,jdbcType=VARCHAR},instrument_A_DATE=#{instrument_A_DATE,jdbcType=VARCHAR},instrument_REMARK=#{instrument_REMARK,jdbcType=VARCHAR} where serialno=#{serialNo,jdbcType=VARCHAR}
+    </update>
+    
+    <delete id="deleteBusinessOrderBySerialNo" parameterType="String">
+    	delete from business_order where serialno=#{serialNo,jdbcType=VARCHAR}
+    </delete>
+    
+    <delete id="deleteBusinessOrderInfoByOrderSerialNo" parameterType="String">
+    	delete from business_orderinfo where orderserialno=#{orderSerialNo,jdbcType=VARCHAR}
+    </delete>
+    
+    <delete id="deleteBusinessOrderInfoBySerialNo" parameterType="String">
+    	delete from business_orderinfo where serialno=#{serialNo,jdbcType=VARCHAR}
+    </delete>
+</mapper>

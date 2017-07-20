@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.CodeDAO">
+    
+    <select id="getAllCodeFromCatalog" parameterType="String" resultType="com.eps.bean.CodeCatalog">
+        select * from code_catalog where status='1' order by sortno
+    </select>
+    
+    <select id="getCodeLibraryByCodeNo" parameterType="String" resultType="com.eps.bean.CodeLibrary">
+        select * from code_library where codeno=#{codeNo} order by sortno
+    </select>
+    
+    <select id="getAllCodeFromLibrary" parameterType="String" resultType="com.eps.bean.CodeLibrary">
+        select * from code_library where status='1' order by sortno
+    </select>
+</mapper>

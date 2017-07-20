@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns="http://java.sun.com/xml/ns/javaee"  
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"  
+    version="3.0">  
+  <display-name>EntProductingSystem</display-name>
+  
+  <!-- Spring配置文件 -->  
+<!--   <context-param>   -->
+<!--       <param-name>contextConfigLocation</param-name>   -->
+<!--       <param-value> -->
+<!--       		classpath:spring-mybatis.xml, -->
+<!--         	classpath:spring-mvc.xml -->
+<!--       </param-value>   -->
+<!--   </context-param> -->
+  
+  <!-- 编码过滤器 -->  
+    <filter>  
+        <filter-name>encodingFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+        <async-supported>true</async-supported>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>UTF-8</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>encodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping> 
+    
+	<!-- Spring监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+    </listener>  
+    <context-param>  
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>
+<!--            	classpath:spring-*.xml -->
+        	classpath:spring-mybatis.xml,
+        	classpath:spring-mvc.xml,
+        	classpath:spring-aop.xml
+        </param-value>  
+    </context-param> 
+    
+    <!-- 防止Spring内存溢出监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
+    </listener>      
+    
+    <!-- Spring MVC servlet -->  
+    <servlet>  
+        <servlet-name>SpringMVC</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+        <init-param>  
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>classpath:spring-mvc.xml</param-value>  
+        </init-param>  
+        <load-on-startup>1</load-on-startup>  
+        <async-supported>true</async-supported>  
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>SpringMVC</servlet-name>  
+        <!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->  
+<!--         <url-pattern>/</url-pattern>  -->
+        <url-pattern>*.do</url-pattern>   
+    </servlet-mapping>  
+    
+    <welcome-file-list>
+    	<welcome-file>Logon.jsp</welcome-file>
+  	</welcome-file-list>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+  
+  <session-config>
+  	<session-timeout>20</session-timeout>
+  </session-config>
+  
+<!-- 	<filter> -->
+<!-- 		<filter-name>SessionOutFilter</filter-name> -->
+<!-- 		<filter-class>com.eps.system.utils.SessionFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>except</param-name> -->
+<!-- 			<param-value>/Logon.jsp,.js,.css,.jpg,.png</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>SessionOutFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+  
+  <servlet>
+    <servlet-name>LoadServlet</servlet-name>
+    <servlet-class>com.eps.system.cache.LoadServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>ServletReturnSuccess</servlet-name>
+    <servlet-class>com.eps.file.action.ServletReturnSuccess</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletReturnSuccess</servlet-name>
+    <url-pattern>/ServletReturnSuccess</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <servlet-class>com.eps.file.action.UploadFileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <url-pattern>/UploadFileServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DownloadFileServlet</servlet-name>
+    <servlet-class>com.eps.file.action.DownLoadFileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadFileServlet</servlet-name>
+    <url-pattern>/DownloadFileServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteOrderFile</servlet-name>
+    <servlet-class>com.eps.file.action.DeleteOrderFile</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteOrderFile</servlet-name>
+    <url-pattern>/DeleteOrderFile</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowOrderFileList</servlet-name>
+    <servlet-class>com.eps.file.action.ShowOrderFileList</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowOrderFileList</servlet-name>
+    <url-pattern>/ShowOrderFileList</url-pattern>
+  </servlet-mapping>	
+  
+  
+  <servlet>
+    <servlet-name>CreateBusinessOrder</servlet-name>
+    <servlet-class>com.eps.business.action.CreateBusinessOrder</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateBusinessOrder</servlet-name>
+    <url-pattern>/CreateBusinessOrder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CreateBusinessOrderInfo</servlet-name>
+    <servlet-class>com.eps.business.action.CreateBusinessOrderInfo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateBusinessOrderInfo</servlet-name>
+    <url-pattern>/CreateBusinessOrderInfo</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderByCondition</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderByCondition</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderByCondition</servlet-name>
+    <url-pattern>/ShowBusinessOrderByCondition</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateBusinessOrder</servlet-name>
+    <servlet-class>com.eps.business.action.UpdateBusinessOrder</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateBusinessOrder</servlet-name>
+    <url-pattern>/UpdateBusinessOrder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateBusinessOrderInfo</servlet-name>
+    <servlet-class>com.eps.business.action.UpdateBusinessOrderInfo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateBusinessOrderInfo</servlet-name>
+    <url-pattern>/UpdateBusinessOrderInfo</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateFlowOpinion</servlet-name>
+    <servlet-class>com.eps.flow.action.UpdateFlowOpinion</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateFlowOpinion</servlet-name>
+    <url-pattern>/UpdateFlowOpinion</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderBySerialNo</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderBySerialNo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderBySerialNo</servlet-name>
+    <url-pattern>/ShowBusinessOrderBySerialNo</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderInfoByOrderSerialNo</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderInfoByOrderSerialNo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderInfoByOrderSerialNo</servlet-name>
+    <url-pattern>/ShowBusinessOrderInfoByOrderSerialNo</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderByState</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderByState</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderByState</servlet-name>
+    <url-pattern>/ShowBusinessOrderByState</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderByProductID</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderByProductID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderByProductID</servlet-name>
+    <url-pattern>/ShowBusinessOrderByProductID</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderByStateAndUserID</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderByStateAndUserID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderByStateAndUserID</servlet-name>
+    <url-pattern>/ShowBusinessOrderByStateAndUserID</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowBusinessOrderByTask</servlet-name>
+    <servlet-class>com.eps.business.action.ShowBusinessOrderByTask</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowBusinessOrderByTask</servlet-name>
+    <url-pattern>/ShowBusinessOrderByTask</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteBusinessOrder</servlet-name>
+    <servlet-class>com.eps.business.action.DeleteBusinessOrder</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteBusinessOrder</servlet-name>
+    <url-pattern>/DeleteBusinessOrder</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteBusinessOrderInfo</servlet-name>
+    <servlet-class>com.eps.business.action.DeleteBusinessOrderInfo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteBusinessOrderInfo</servlet-name>
+    <url-pattern>/DeleteBusinessOrderInfo</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+    <servlet-name>CreateFlow</servlet-name>
+    <servlet-class>com.eps.flow.action.CreateFlow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateFlow</servlet-name>
+    <url-pattern>/CreateFlow</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>SubmitTask</servlet-name>
+    <servlet-class>com.eps.flow.action.SubmitTask</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitTask</servlet-name>
+    <url-pattern>/SubmitTask</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowNextTaskUserAndOrg</servlet-name>
+    <servlet-class>com.eps.flow.action.ShowNextTaskUserAndOrg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowNextTaskUserAndOrg</servlet-name>
+    <url-pattern>/ShowNextTaskUserAndOrg</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ExportDoc</servlet-name>
+    <servlet-class>com.eps.file.action.ExportDocServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExportDoc</servlet-name>
+    <url-pattern>/ExportDoc</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowAllProduct</servlet-name>
+    <servlet-class>com.eps.product.action.ShowAllProduct</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowAllProduct</servlet-name>
+    <url-pattern>/ShowAllProduct</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateProduct</servlet-name>
+    <servlet-class>com.eps.product.action.UpdateProduct</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateProduct</servlet-name>
+    <url-pattern>/UpdateProduct</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CreateProduct</servlet-name>
+    <servlet-class>com.eps.product.action.CreateProduct</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateProduct</servlet-name>
+    <url-pattern>/CreateProduct</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>CreateUser</servlet-name>
+    <servlet-class>com.eps.user.action.CreateUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateUser</servlet-name>
+    <url-pattern>/CreateUser</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateUser</servlet-name>
+    <servlet-class>com.eps.user.action.UpdateUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateUser</servlet-name>
+    <url-pattern>/UpdateUser</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateUserPassword</servlet-name>
+    <servlet-class>com.eps.user.action.UpdateUserPassword</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateUserPassword</servlet-name>
+    <url-pattern>/UpdateUserPassword</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowUserByUserID</servlet-name>
+    <servlet-class>com.eps.user.action.ShowUserByUserID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowUserByUserID</servlet-name>
+    <url-pattern>/ShowUserByUserID</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteUser</servlet-name>
+    <servlet-class>com.eps.user.action.DeleteUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteUser</servlet-name>
+    <url-pattern>/DeleteUser</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowAllUser</servlet-name>
+    <servlet-class>com.eps.user.action.ShowAllUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowAllUser</servlet-name>
+    <url-pattern>/ShowAllUser</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>CreateOrg</servlet-name>
+    <servlet-class>com.eps.org.action.CreateOrg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateOrg</servlet-name>
+    <url-pattern>/CreateOrg</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateOrg</servlet-name>
+    <servlet-class>com.eps.org.action.UpdateOrg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateOrg</servlet-name>
+    <url-pattern>/UpdateOrg</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteOrg</servlet-name>
+    <servlet-class>com.eps.org.action.DeleteOrg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteOrg</servlet-name>
+    <url-pattern>/DeleteOrg</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowAllOrg</servlet-name>
+    <servlet-class>com.eps.org.action.ShowAllOrg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowAllOrg</servlet-name>
+    <url-pattern>/ShowAllOrg</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>CreateRole</servlet-name>
+    <servlet-class>com.eps.role.action.CreateRole</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateRole</servlet-name>
+    <url-pattern>/CreateRole</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UpdateRole</servlet-name>
+    <servlet-class>com.eps.role.action.UpdateRole</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateRole</servlet-name>
+    <url-pattern>/UpdateRole</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>DeleteRole</servlet-name>
+    <servlet-class>com.eps.role.action.DeleteRole</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteRole</servlet-name>
+    <url-pattern>/DeleteRole</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowAllRole</servlet-name>
+    <servlet-class>com.eps.role.action.ShowAllRole</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowAllRole</servlet-name>
+    <url-pattern>/ShowAllRole</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowRoleUsersByRoleID</servlet-name>
+    <servlet-class>com.eps.role.action.ShowRoleUsersByRoleID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowRoleUsersByRoleID</servlet-name>
+    <url-pattern>/ShowRoleUsersByRoleID</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AddUserRole</servlet-name>
+    <servlet-class>com.eps.user.action.AddUserRole</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddUserRole</servlet-name>
+    <url-pattern>/AddUserRole</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RemoveUserRole</servlet-name>
+    <servlet-class>com.eps.user.action.RemoveUserRole</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemoveUserRole</servlet-name>
+    <url-pattern>/RemoveUserRole</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowUserRoleByUserID</servlet-name>
+    <servlet-class>com.eps.user.action.ShowUserRoleByUserID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowUserRoleByUserID</servlet-name>
+    <url-pattern>/ShowUserRoleByUserID</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowCurrentFlowOpinion</servlet-name>
+    <servlet-class>com.eps.flow.action.ShowCurrentFlowOpinion</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowCurrentFlowOpinion</servlet-name>
+    <url-pattern>/ShowCurrentFlowOpinion</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ShowFlowOpinions</servlet-name>
+    <servlet-class>com.eps.flow.action.ShowFlowOpinions</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowFlowOpinions</servlet-name>
+    <url-pattern>/ShowFlowOpinions</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

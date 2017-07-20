@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="com.eps.dao.UserDAO">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.domain.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+    <!-- 
+        根据id查询得到一个user对象
+     -->
+<!--     <select id="getUser" parameterType="String" resultType="com.eps.bean.User"> -->
+<!--         select * from user_info where userid=#{userID,jdbcType=VARCHAR} -->
+<!--     </select> -->
+    
+    <select id="getAllUser" parameterType="String" resultType="com.eps.bean.User">
+        select * from user_info where userid not in ('System')
+    </select>
+    
+    <select id="getUserByUserID" parameterType="String" resultType="com.eps.bean.User">
+        select * from user_info where userid=#{userID,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getAllRole" parameterType="String" resultType="com.eps.bean.Role">
+        select * from role_info 
+    </select>
+    
+    <select id="getRoleByRoleID" parameterType="String" resultType="com.eps.bean.Role">
+        select * from role_info where roleID=#{roleID,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getUserFromRoleID" parameterType="String" resultType="com.eps.bean.User">
+        select * from user_info ui,user_role ur,org_info oi,role_info ri where ri.roleid=ur.roleid and ui.userid=ur.userid and ui.orgid=oi.orgid and ur.roleid=#{roleID,jdbcType=VARCHAR} and ui.status='1'
+    </select>
+    
+    <select id="getUserRole" parameterType="String" resultType="com.eps.bean.UserRole">
+        select * from user_role where userid=#{userID,jdbcType=VARCHAR} and roleid=#{roleID,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getUserRoleByUserID" parameterType="String" resultType="com.eps.bean.UserRole">
+        select * from user_role where userid=#{userID,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getRolesByUserID" parameterType="String" resultType="com.eps.bean.Role">
+        select * from role_info ri, user_role ur where ur.userid=#{userID,jdbcType=VARCHAR} and ur.roleid = ri.roleid 
+    </select>
+    
+    <insert id="insertUser" parameterType="String" >
+        insert into user_info(serialno,userid,username,phone,telephone,mail,superior,status,password,orgid) values (#{serialNo},#{userID},#{userName},#{phone},#{telephone},#{mail},#{superior},#{status},#{password},#{orgID})
+    </insert>
+    
+    <update id="updateUser" parameterType="String">
+    	update user_info set userID=#{userID,jdbcType=VARCHAR},username=#{userName,jdbcType=VARCHAR}, phone=#{phone,jdbcType=VARCHAR}, telephone=#{telephone,jdbcType=VARCHAR}, mail=#{mail,jdbcType=VARCHAR}, superior=#{superior,jdbcType=VARCHAR}, status=#{status,jdbcType=VARCHAR}, password=#{password,jdbcType=VARCHAR}, orgID=#{orgID,jdbcType=VARCHAR} where serialno=#{serialNo}
+    </update>
+    
+    <update id="updateUserPassword" parameterType="String">
+    	update user_info set password=#{newpassword,jdbcType=VARCHAR} where userID=#{userID} and password=#{password}
+    </update>
+    
+    <delete id="deleteUser" parameterType="String">
+    	delete from user_info where userID=#{userID,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insertRole" parameterType="String" >
+        insert into role_info(serialno,roleid,rolename,status) values (#{serialNo,jdbcType=VARCHAR},#{roleID,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR})
+    </insert>
+    
+    <update id="updateRole" parameterType="String">
+    	update role_info set rolename=#{roleName,jdbcType=VARCHAR}, status=#{status,jdbcType=VARCHAR} where roleID=#{roleID,jdbcType=VARCHAR}
+    </update>
+    
+    <delete id="deleteRoleByRoleID" parameterType="String">
+    	delete from role_info where roleID=#{roleID,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insertUserRole" parameterType="String" >
+        insert into user_role(userid,roleid) values (#{userID,jdbcType=VARCHAR},#{roleID,jdbcType=VARCHAR})
+    </insert>
+    
+    <delete id="deleteUserRole" parameterType="String" >
+        delete from user_role where userID=#{userID,jdbcType=VARCHAR} and roleID=#{roleID,jdbcType=VARCHAR}
+    </delete>
+</mapper>

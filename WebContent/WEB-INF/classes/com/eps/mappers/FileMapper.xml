@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.FileDAO">
+    <insert id="insertDocumentInfo" parameterType="String" >
+        insert into document_path(serialno,filename,filetype,savepath,status,uploaduserid,uploadorgid,uploadtime,downloadtimes,orderserialno) values (#{serialNo,jdbcType=VARCHAR},#{fileName,jdbcType=VARCHAR},#{fileType,jdbcType=VARCHAR},#{savePath,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{uploadUserID,jdbcType=VARCHAR},#{uploadOrgID,jdbcType=VARCHAR},#{uploadTime,jdbcType=VARCHAR},#{downloadTimes,jdbcType=VARCHAR},#{orderSerialNo,jdbcType=VARCHAR})
+    </insert>
+    
+    <select id="queryDocumentBySerialNo" parameterType="String" resultType="com.eps.bean.DocumentPath">
+        select * from document_path where serialno=#{serialNo,jdbcType=VARCHAR} 
+    </select>
+    
+    <select id="queryDocumentByOrderSerialNo" parameterType="String" resultType="com.eps.bean.DocumentPath">
+        select * from document_path where orderserialno=#{orderSerialNo,jdbcType=VARCHAR} 
+    </select>
+    
+    <update id="updateDownloadTimes">
+    	update document_path set downloadtimes=#{downloadTimes,jdbcType=VARCHAR} where serialno=#{serialNo,jdbcType=VARCHAR}
+    </update>
+    
+    <delete id="deleteFileBySerialNo" parameterType="String">
+    	delete from document_path where serialno=#{serialNo,jdbcType=VARCHAR}
+    </delete>
+</mapper>

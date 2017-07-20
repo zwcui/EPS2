@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eps.dao.OrgDAO">
+<!--     <select id="getOrg" parameterType="String" resultType="com.eps.bean.OrgBean"> -->
+<!--         select * from ORG_INFO where orgid=#{orgID} -->
+<!--     </select> -->
+    
+    <select id="getAllOrg" parameterType="String" resultType="com.eps.bean.Org">
+        select * from org_info where status='1'
+    </select>
+    
+    <select id="getOrgByOrgID" parameterType="String" resultType="com.eps.bean.Org">
+        select * from org_info where orgid=#{orgID,jdbcType=VARCHAR}
+    </select>
+    
+    <insert id="insertOrg" parameterType="String" >
+        insert into org_info(serialNo,orgid,orgname,orglevel,status,sortno) values (#{serialNo,jdbcType=VARCHAR},#{orgID},#{orgName},#{orgLevel},#{status},#{sortNo})
+    </insert>
+    
+    <update id="updateOrg" parameterType="String">
+    	update org_info set orgname=#{orgName,jdbcType=VARCHAR}, orglevel=#{orgLevel,jdbcType=VARCHAR}, status=#{status,jdbcType=VARCHAR}, sortNo=#{sortNo,jdbcType=VARCHAR} where orgID=#{orgID}
+    </update>
+    
+    <delete id="deleteOrg" parameterType="String">
+    	delete from org_info where orgID=#{orgID,jdbcType=VARCHAR}
+    </delete>
+    
+</mapper>
